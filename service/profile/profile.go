@@ -930,7 +930,8 @@ func (p *Profile) parseLine(line string) {
 			}
 
 			if p.SystemProfile.AuthErrorCount >= 1 && p.SystemProfile.AuthErrorCount <= maximumBackoff {
-				time.Sleep(time.Duration(p.SystemProfile.AuthErrorCount) * time.Second)
+				backOffset := mathrand.Intn(1000)
+				time.Sleep(time.Duration(p.SystemProfile.AuthErrorCount)*time.Second + time.Duration(backOffset)*time.Millisecond)
 			} else {
 				time.Sleep(30 * time.Second)
 			}
