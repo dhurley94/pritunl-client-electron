@@ -931,9 +931,10 @@ func (p *Profile) parseLine(line string) {
 
 			if p.SystemProfile.AuthErrorCount >= 1 && p.SystemProfile.AuthErrorCount <= maximumBackoff {
 				backOffset := mathrand.Intn(1000)
-				time.Sleep(time.Duration(p.SystemProfile.AuthErrorCount)*time.Second + time.Duration(backOffset)*time.Millisecond)
+				exponent := p.SystemProfile.AuthErrorCount * p.SystemProfile.AuthErrorCount
+				time.Sleep(time.Duration(exponent)*time.Second + time.Duration(backOffset)*time.Millisecond)
 			} else {
-				time.Sleep(30 * time.Second)
+				time.Sleep(60 * time.Second)
 			}
 		}
 	} else if strings.Contains(line, "link remote:") {
